@@ -64,6 +64,14 @@ app.get("/brands/:brand_name",async(req,res)=>{
 
 })
 
+app.get('/brands/details/:id',async(req,res)=>{
+    const id = req.params.id;
+    console.log(id);
+    const filter ={_id : new ObjectId(id)}
+    const result = await brandsCollection.findOne(filter)
+    res.send(result)
+})
+
 app.listen(port, () => {
     console.log(`server is running at ${port}`);
 })
