@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 require('dotenv').config()
@@ -39,9 +39,29 @@ async function run() {
 }
 run().catch(console.dir);
 
+const brandsCollection = client.db("brandshop").collection("brands")
+
 
 app.get("/", (req, res) => {
     res.send("brand server")
+})
+
+app.post("/brands", async(req,res)=>{
+    const brands = req.body;
+    console.log(brands);
+    const result = await brandsCollection.insertOne(brands)
+    res.send(result)
+
+})
+
+app.get("/brands/:brand_name",async(req,res)=>{
+    const brandName = req.params.brand_name
+    console.log(brandName);
+    const filter = {brandname: brandName}
+    const result = await brandsCollection.find(filter).toArray()
+    console.log(result);
+    res.send(result)
+
 })
 
 app.listen(port, () => {
