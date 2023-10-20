@@ -40,6 +40,7 @@ async function run() {
 run().catch(console.dir);
 
 const brandsCollection = client.db("brandshop").collection("brands")
+const cartCollection = client.db("brandshop").collection("cart")
 
 
 app.get("/", (req, res) => {
@@ -52,6 +53,13 @@ app.post("/brands", async(req,res)=>{
     const result = await brandsCollection.insertOne(brands)
     res.send(result)
 
+})
+
+app.post("/brands/carts", async(req,res)=>{
+    const carts = req.body
+    console.log(carts);
+    const result = await cartCollection.insertOne(carts)
+    res.send(result)
 })
 
 app.get("/brands/:brand_name",async(req,res)=>{
