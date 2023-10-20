@@ -80,6 +80,34 @@ app.get('/brands/details/:id',async(req,res)=>{
     res.send(result)
 })
 
+app.get('/brands/updates/:id',async(req,res)=>{
+    const id = req.params.id;
+    console.log(id);
+    const filter ={_id : new ObjectId(id)}
+    const result = await brandsCollection.findOne(filter)
+    res.send(result)
+})
+
+app.put('/brands/updates/:id',async(req,res)=>{
+    const id = req.params.id;
+    const filter = {_id:new ObjectId(id)}
+    const options = {upsert : true}
+    const updatedproduct = req.body;
+    const product = {
+      $set :{
+        img : updatedproduct.img,
+        name : updatedproduct.name,
+        brandname : updatedproduct.brandname,
+        type : updatedproduct.type,
+        price : updatedproduct.price,
+        description : updatedproduct.description,
+        rating : updatedproduct.rating,
+      }
+    }
+    const result = await brandsCollection.updateOne(filter,product,options)
+    res.send(result)
+  })
+
 app.get('/brands/carts/showcart',async(req,res)=>{
     const cursor = cartCollection.find()
     const result = await cursor.toArray()
