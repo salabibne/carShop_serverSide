@@ -80,6 +80,20 @@ app.get('/brands/details/:id',async(req,res)=>{
     res.send(result)
 })
 
+app.get('/brands/carts/showcart',async(req,res)=>{
+    const cursor = cartCollection.find()
+    const result = await cursor.toArray()
+    res.send(result)
+})
+
+app.delete('/brands/carts/delete/:id',async(req,res)=>{
+    const id = req.params.id
+    const query = {_id : new ObjectId(id)}
+    const result = await cartCollection.deleteOne(query)
+    res.send(result)
+
+})
+
 app.listen(port, () => {
     console.log(`server is running at ${port}`);
 })
